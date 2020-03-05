@@ -9,6 +9,10 @@ import xml.dom.minidom
 with open("env.json") as environment:
 	environment = json.load(environment)
 
+cache = glob.glob("./public/data/*.json")
+for file in cache:
+	os.remove(file)
+
 bounded = environment["start_points_radius_limit"] > 0 
 if bounded:
 	lng = environment["map_default_center"][0]
@@ -20,10 +24,12 @@ if bounded:
 	east = lng + (180/math.pi) * (radius/6378137) / math.cos(lat)
 	west = lng - (180/math.pi) * (radius/6378137) / math.cos(lat)
 
-files = []
 i = 1
+generated_files = []
+files = glob.glob("./resources/*.tcx")
+print(str(len(files)) + " files discovered.")
 
-for file in glob.glob("./resources/*.tcx"):
+for file in files:
 	content = xml.dom.minidom.parse(file)
 	activities = content.getElementsByTagName("Activity")
 
@@ -55,12 +61,13 @@ for file in glob.glob("./resources/*.tcx"):
 		result.write("]}}")
 		result.close()
 
-		files.append(index)
+		generated_files.append(index)
 		i += 1
 
 summary = open("./public/data/_index.json", "w")
-summary.write(json.dumps(files))
+summary.write(json.dumps(generated_files))
 summary.close()
+print(str(len(generated_files)) + " files computed.")
 
 index = open("./public/index.html", "w")
 with open("assets/index.html") as template:
@@ -72,3 +79,5 @@ with open("assets/index.html") as template:
 	template = template.replace("$MAP_DEFAULT_ZOOM_LEVEL", str(environment["map_default_zoom_level"]))
 
 	index.write(template)
+
+print("Index file generated.")

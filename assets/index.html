@@ -14,16 +14,17 @@
         <div id="map"></div>
         <script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
         <script>
-        	mapboxgl.accessToken = "$MAPBOX_API_KEY";
+        	mapboxgl.accessToken = "$MAPBOX_API_KEY"
+
             var map = new mapboxgl.Map({
                 container: "map",
                 style: "$MAPBOX_STYLE_URL",
                 center: [$MAP_DEFAULT_CENTER[0], $MAP_DEFAULT_CENTER[1]],
-                zoom: $MAP_DEFAULT_ZOOM_LEVEL
-            });
+                zoom: $MAP_DEFAULT_ZOOM_LEVEL,
+            })
 
             map.on("load", () => {
-                fetch("/data/_index.json").then(response => response.json()).then(files => {
+                fetch("/data/_index.json").then(response => response.json()).then(async (files) => {
                     for (let file of files) {
                         map.addSource("route-" + file, {
                             "type": "geojson",
@@ -42,7 +43,8 @@
                                 "line-width": 2,
                                 "line-opacity": 0.5
                             }
-                        });
+                        })
+                        await new Promise(wait => setTimeout(wait, 100));
                     }
                 })
             })
