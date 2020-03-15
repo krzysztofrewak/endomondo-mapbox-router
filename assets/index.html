@@ -24,7 +24,7 @@
             })
 
             map.on("load", () => {
-                fetch("/data/_index.json").then(response => response.json()).then(async (files) => {
+                fetch("/data/$INDEX_FILENAME").then(response => response.json()).then(async (files) => {
                     for (let file of files) {
                         map.addSource("route-" + file, {
                             "type": "geojson",
@@ -39,7 +39,7 @@
                                 "line-cap": "round"
                             },
                             "paint": {
-                                "line-color": "#3090C7",
+                                "line-color": "#FFA500",
                                 "line-width": 2,
                                 "line-opacity": 0.5
                             }

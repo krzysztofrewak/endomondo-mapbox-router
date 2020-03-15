@@ -2,6 +2,7 @@ import glob
 import json
 import math
 import os
+import random
 import sys
 import xml.dom.minidom
 
@@ -38,6 +39,9 @@ for file in files:
 			continue
 
 		positions = activity.getElementsByTagName("Position")
+		if not positions:
+			continue
+
 		longitude = float(positions[0].getElementsByTagName("LongitudeDegrees")[0].firstChild.nodeValue)
 		latitude = float(positions[0].getElementsByTagName("LatitudeDegrees")[0].firstChild.nodeValue)
 
@@ -48,7 +52,7 @@ for file in files:
 			if not (latitude > south and latitude < north):
 				continue
 
-		index = "{:03d}".format(i)
+		index = "{:03d}".format(i) + "-" + "{:09d}".format(random.randint(1, 999999))
 		result = open("./public/data/{}.json".format(index), "w")
 		result.write("{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[")
 
@@ -64,7 +68,9 @@ for file in files:
 		generated_files.append(index)
 		i += 1
 
-summary = open("./public/data/_index.json", "w")
+index_filename = "_index-" + "{:09d}".format(random.randint(1, 999999)) + ".json"
+
+summary = open("./public/data/" + index_filename, "w")
 summary.write(json.dumps(generated_files))
 summary.close()
 print(str(len(generated_files)) + " files computed.")
@@ -72,6 +78,7 @@ print(str(len(generated_files)) + " files computed.")
 index = open("./public/index.html", "w")
 with open("assets/index.html") as template:
 	template = template.read()
+	template = template.replace("$INDEX_FILENAME", index_filename)
 	template = template.replace("$MAPBOX_API_KEY", environment["mapbox_api_key"])
 	template = template.replace("$MAPBOX_STYLE_URL", environment["mapbox_style_url"])
 	template = template.replace("$MAP_DEFAULT_CENTER[0]", str(environment["map_default_center"][0]))
