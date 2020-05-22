@@ -11,6 +11,7 @@ services:
         MAP_DEFAULT_CENTER_LONGITUDE: 0.000000
         MAP_DEFAULT_ZOOM_LEVEL: 1
         START_POINTS_RADIUS_LIMIT: 0
+        ACTIVITY: ""
     image: endomondo-mapbox-router
     ports:
       - "8080:80"

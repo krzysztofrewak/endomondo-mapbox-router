@@ -13,6 +13,7 @@ MAP_DEFAULT_CENTER_LATITUDE = float(os.environ["MAP_DEFAULT_CENTER_LATITUDE"])
 MAP_DEFAULT_CENTER_LONGITUDE = float(os.environ["MAP_DEFAULT_CENTER_LONGITUDE"])
 MAP_DEFAULT_ZOOM_LEVEL = int(os.environ["MAP_DEFAULT_ZOOM_LEVEL"])
 START_POINTS_RADIUS_LIMIT = float(os.environ["START_POINTS_RADIUS_LIMIT"])
+ACTIVITY = os.environ["ACTIVITY"]
 
 
 cache = glob.glob("./public/data/*.json")
@@ -40,7 +41,7 @@ for file in files:
 	activities = content.getElementsByTagName("Activity")
 
 	for activity in activities:
-		if activity.getAttribute("Sport") != "Biking":
+		if ACTIVITY and activity.getAttribute("Sport") != ACTIVITY:
 			continue
 
 		positions = activity.getElementsByTagName("Position")

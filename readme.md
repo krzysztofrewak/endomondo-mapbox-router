@@ -13,7 +13,8 @@ Fill configuration fields in build arguments (you have to at least provide Mapbo
 * `MAPBOX_STYLE_URL`: by default it's a [Mapbox Dark](https://www.mapbox.com/maps/light-dark/), but you can put whatever you like;
 * `MAP_DEFAULT_CENTER`: center point for generated map;
 * `MAP_DEFAULT_ZOOM_LEVEL`: zoom level for generated map in form of array of longitude and latitude;
-* `START_POINTS_RADIUS_LIMIT`: you can filter all workouts that started further than chosen kilometer range; it can be helpful if you'd like to change scope of map for only one city; insert `0` to remove limits.
+* `START_POINTS_RADIUS_LIMIT`: you can filter all workouts that started further than chosen kilometer range; it can be helpful if you'd like to change scope of map for only one city; insert `0` to remove limits;
+* `ACTIVITY`: specifies kind of activity to draw (tracks with other kind of activites fill be filtered out); leave empty to include all tracks;
 
 Build image:
 ```
