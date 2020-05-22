@@ -3,12 +3,12 @@
 ## Usage
 Put all your workout files to `./resources` directory. You can download them one-by-one from Endomondo's dashboard or request all of them according to [this Suppport page](https://support.endomondo.com/hc/en-us/articles/360006081933-How-to-download-your-Endomondo-user-data-). Only TCX files are supported right now. You can put any other files to `./resources` directory and they will be ignored.
 
-Next, create an docker-compose file based on provided template and fill with proper data:
+Next, use provided `docker-compose.yml` template to create personal configuration.
 ```
 cp docker-compose.yml.template docker-compose.yml
 ```
 
-Fill configuration fields in build arguments:
+Fill configuration fields in build arguments (you have to at least provide Mapbox API key):
 * `MAPBOX_API_KEY`: your own Mapbox API key; you can generate it for free by registering on [https://www.mapbox.com/](https://www.mapbox.com/);
 * `MAPBOX_STYLE_URL`: by default it's a [Mapbox Dark](https://www.mapbox.com/maps/light-dark/), but you can put whatever you like;
 * `MAP_DEFAULT_CENTER`: center point for generated map;
