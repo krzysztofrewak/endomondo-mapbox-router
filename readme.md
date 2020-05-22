@@ -3,24 +3,27 @@
 ## Usage
 Put all your workout files to `./resources` directory. You can download them one-by-one from Endomondo's dashboard or request all of them according to [this Suppport page](https://support.endomondo.com/hc/en-us/articles/360006081933-How-to-download-your-Endomondo-user-data-). Only TCX files are supported right now. You can put any other files to `./resources` directory and they will be ignored.
 
-Next, create an environment file based on provided example and fill with proper data:
+Next, create an docker-compose file based on provided template and fill with proper data:
 ```
-cp env.example.json env.json
-```
-
-Put following data to the JSON keys:
-* `mapbox_api_key`: your own Mapbox API key; you can generate it for free by registering on [https://www.mapbox.com/](https://www.mapbox.com/);
-* `mapbox_style_url`: by default it's a [Mapbox Dark](https://www.mapbox.com/maps/light-dark/), but you can put whatever you like;
-* `map_default_center`: center point for generated map;
-* `map_default_zoom_level`: zoom level for generated map in form of array of longitude and latitude;
-* `start_points_radius_limit`: you can filter all workouts that started further than chosen kilometer range; it can be helpful if you'd like to change scope of map for only one city; insert `0` to remove limits.
-
-Run builder via Docker-compose to build router and static API for the map:
-```
-docker-compose run -w /application python python builder.py
+cp docker-compose.yml.template docker-compose.yml
 ```
 
-Serve simple HTTP server (of course you can use your own solution for that) and go to `://localhost:11123` (or whatever other port you want):
+Fill configuration fields in build arguments:
+* `MAPBOX_API_KEY`: your own Mapbox API key; you can generate it for free by registering on [https://www.mapbox.com/](https://www.mapbox.com/);
+* `MAPBOX_STYLE_URL`: by default it's a [Mapbox Dark](https://www.mapbox.com/maps/light-dark/), but you can put whatever you like;
+* `MAP_DEFAULT_CENTER`: center point for generated map;
+* `MAP_DEFAULT_ZOOM_LEVEL`: zoom level for generated map in form of array of longitude and latitude;
+* `START_POINTS_RADIUS_LIMIT`: you can filter all workouts that started further than chosen kilometer range; it can be helpful if you'd like to change scope of map for only one city; insert `0` to remove limits.
+
+Build image:
 ```
-docker-compose run -p 11123:8000 -w /application/public python python -m http.server
+docker-compose build
 ```
+
+Run service:
+```
+docker-compose up
+```
+
+Service will be available on http://localhost:8080/ (you can tweak it in the `docker-compose.yml`).
+
