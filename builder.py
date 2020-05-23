@@ -7,18 +7,24 @@ import sys
 import xml.dom.minidom
 
 
-with open("env.json") as environment:
-	environment = json.load(environment)
+MAPBOX_API_KEY = os.environ["MAPBOX_API_KEY"]
+MAPBOX_STYLE_URL = os.environ["MAPBOX_STYLE_URL"]
+MAP_DEFAULT_CENTER_LATITUDE = float(os.environ["MAP_DEFAULT_CENTER_LATITUDE"])
+MAP_DEFAULT_CENTER_LONGITUDE = float(os.environ["MAP_DEFAULT_CENTER_LONGITUDE"])
+MAP_DEFAULT_ZOOM_LEVEL = int(os.environ["MAP_DEFAULT_ZOOM_LEVEL"])
+START_POINTS_RADIUS_LIMIT = float(os.environ["START_POINTS_RADIUS_LIMIT"])
+ACTIVITY = os.environ["ACTIVITY"]
+
 
 cache = glob.glob("./public/data/*.json")
 for file in cache:
 	os.remove(file)
 
-bounded = environment["start_points_radius_limit"] > 0 
+bounded = START_POINTS_RADIUS_LIMIT > 0
 if bounded:
-	lng = environment["map_default_center"][0]
-	lat = environment["map_default_center"][1]
-	radius = float(environment["start_points_radius_limit"]) * 1000
+	lng = MAP_DEFAULT_CENTER_LATITUDE
+	lat = MAP_DEFAULT_CENTER_LONGITUDE
+	radius = START_POINTS_RADIUS_LIMIT * 1000
 
 	north = lat + (180/math.pi) * (radius/6378137)
 	south = lat - (180/math.pi) * (radius/6378137)
@@ -35,7 +41,7 @@ for file in files:
 	activities = content.getElementsByTagName("Activity")
 
 	for activity in activities:
-		if activity.getAttribute("Sport") != "Biking":
+		if ACTIVITY and activity.getAttribute("Sport") != ACTIVITY:
 			continue
 
 		positions = activity.getElementsByTagName("Position")
@@ -79,11 +85,11 @@ index = open("./public/index.html", "w")
 with open("assets/index.html") as template:
 	template = template.read()
 	template = template.replace("$INDEX_FILENAME", index_filename)
-	template = template.replace("$MAPBOX_API_KEY", environment["mapbox_api_key"])
-	template = template.replace("$MAPBOX_STYLE_URL", environment["mapbox_style_url"])
-	template = template.replace("$MAP_DEFAULT_CENTER[0]", str(environment["map_default_center"][0]))
-	template = template.replace("$MAP_DEFAULT_CENTER[1]", str(environment["map_default_center"][1]))
-	template = template.replace("$MAP_DEFAULT_ZOOM_LEVEL", str(environment["map_default_zoom_level"]))
+	template = template.replace("$MAPBOX_API_KEY", MAPBOX_API_KEY)
+	template = template.replace("$MAPBOX_STYLE_URL", MAPBOX_STYLE_URL)
+	template = template.replace("$MAP_DEFAULT_CENTER[0]", str(MAP_DEFAULT_CENTER_LATITUDE))
+	template = template.replace("$MAP_DEFAULT_CENTER[1]", str(MAP_DEFAULT_CENTER_LONGITUDE))
+	template = template.replace("$MAP_DEFAULT_ZOOM_LEVEL", str(MAP_DEFAULT_ZOOM_LEVEL))
 
 	index.write(template)
 
