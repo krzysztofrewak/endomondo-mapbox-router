@@ -12,6 +12,7 @@ services:
         MAP_DEFAULT_ZOOM_LEVEL: 1
         START_POINTS_RADIUS_LIMIT: 0
         ACTIVITY: ""
+        FILENAME_FILTER: "*.tcx"
     image: endomondo-mapbox-router
     ports:
       - "8080:80"
