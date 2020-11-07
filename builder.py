@@ -14,6 +14,7 @@ MAP_DEFAULT_CENTER_LONGITUDE = float(os.environ["MAP_DEFAULT_CENTER_LONGITUDE"])
 MAP_DEFAULT_ZOOM_LEVEL = int(os.environ["MAP_DEFAULT_ZOOM_LEVEL"])
 START_POINTS_RADIUS_LIMIT = float(os.environ["START_POINTS_RADIUS_LIMIT"])
 ACTIVITY = os.environ["ACTIVITY"]
+FILENAME_FILTER = os.environ["FILENAME_FILTER"]
 
 
 cache = glob.glob("./public/data/*.json")
@@ -33,7 +34,7 @@ if bounded:
 
 i = 1
 generated_files = []
-files = glob.glob("./resources/*.tcx")
+files = glob.glob("./resources/" + FILENAME_FILTER)
 print(str(len(files)) + " files discovered.")
 
 for file in files:

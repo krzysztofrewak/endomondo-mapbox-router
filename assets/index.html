@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <title>Endomondo/Mapbox Router</title>
@@ -24,7 +24,7 @@
             })
 
             map.on("load", () => {
-                fetch("/data/$INDEX_FILENAME").then(response => response.json()).then(async (files) => {
+                fetch("/data/$INDEX_FILENAME?" + (new Date().getTime())).then(response => response.json()).then(async (files) => {
                     for (let file of files) {
                         map.addSource("route-" + file, {
                             "type": "geojson",
@@ -44,7 +44,7 @@
                                 "line-opacity": 0.5
                             }
                         })
-                        await new Promise(wait => setTimeout(wait, 100));
+                        await new Promise(wait => setTimeout(wait, 50));
                     }
                 })
             })
